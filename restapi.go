@@ -1838,6 +1838,20 @@ func (s *Session) ChannelMessagesPinned(channelID int64) (st []*Message, err err
 	return
 }
 
+// ChannelMessageCrosspost crossposts a message in a news channel to followers
+// channelID	: The ID of a channel
+// messageID	: The ID of a message
+func (s *Session) ChannelMessageCrosspost(channelID, messageID int64) (m *Message, error) {
+	endpoint := EndpointChannelMessageCrosspost(channelID, messageID)
+
+	body, err := s.RequestWithBucketID("POST", endpoint, nil, endpoint)
+	if err != nil {
+		return
+	}
+
+	err = unmarshal(body, &m)
+	return
+}
 // ChannelFileSend sends a file to the given channel.
 // channelID : The ID of a Channel.
 // name: The name of the file.
